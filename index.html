@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resource Management System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Animated Cyber Background -->
+    <div class="cyber-grid"></div>
+    <div class="scan-line"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar slide-right">
+            <div class="logo">
+                <div class="logo-icon glow-pulse">AI</div>
+                <h2>EcoCompute</h2>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li class="active" data-target="view-dashboard"><i>📊</i> Overview</li>
+                    <li data-target="view-predictions"><i>🔮</i> Predictions</li>
+                    <li data-target="view-scheduler"><i>⚡</i> Scheduler</li>
+                    <li data-target="view-models"><i>🧠</i> Models</li>
+                    <li data-target="view-analytics"><i>🔥</i> Extreme Analytics</li>
+                </ul>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="user-info">Admin View - System Override</div>
+                <button id="chaos-btn" class="chaos-btn" style="margin-top: 15px;">⚠️ INJECT CHAOS</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header slide-down">
+                <div class="header-left">
+                    <h1 id="page-title">Data Center Operations</h1>
+                    <p class="subtitle">Real-time Resource Monitoring & Optimization</p>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator glow-pulse">
+                        <span class="dot pulse"></span>
+                        <span id="system-status-text">System Active</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD VIEW -->
+            <div id="view-dashboard" class="view-section active">
+                <div class="dashboard-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-cards">
+                        <div class="card kpi fade-up" style="animation-delay: 0.1s;">
+                            <h3>CPU Usage</h3>
+                            <div class="value" id="cpu-value" data-val="0">0%</div>
+                            <p class="subtext">Current Load</p>
+                        </div>
+                        <div class="card kpi fade-up" style="animation-delay: 0.2s;">
+                            <h3>GPU Usage</h3>
+                            <div class="value" id="gpu-value" data-val="0">0%</div>
+                            <p class="subtext">Cluster Average</p>
+                        </div>
+                        <div class="card kpi fade-up" style="animation-delay: 0.3s;">
+                            <h3>Power Draw</h3>
+                            <div class="value highlight-orange" id="power-value" data-val="0">0 W</div>
+                            <p class="subtext">Real-time Consumption</p>
+                        </div>
+                        <div class="card kpi fade-up" style="animation-delay: 0.4s;">
+                            <h3>Est. Carbon Reduced</h3>
+                            <div class="value highlight-red" id="carbon-value" data-val="0">0%</div>
+                            <p class="subtext">Compared to baseline</p>
+                        </div>
+                    </div>
+
+                    <!-- Main Monitoring Chart -->
+                    <div class="card chart-container large fade-up" style="animation-delay: 0.5s;">
+                        <div class="card-header">
+                            <h2>Resource Utilization</h2>
+                            <span class="badge breathing-badge">Live</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="resourceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Workload Prediction -->
+                    <div class="card chart-container fade-up" style="animation-delay: 0.6s;">
+                        <div class="card-header">
+                            <h2>Workload Prediction (Next Cycle)</h2>
+                        </div>
+                        <div class="prediction-info">
+                            <div class="pred-item status-transition">
+                                <span class="label">Predicted CPU:</span>
+                                <span class="val" id="pred-cpu" data-val="0">0%</span>
+                            </div>
+                            <div class="pred-item status-transition">
+                                <span class="label">Predicted GPU:</span>
+                                <span class="val" id="pred-gpu" data-val="0">0%</span>
+                            </div>
+                        </div>
+                        <div class="scheduler-action">
+                            <h3>Dynamic Scheduler Action</h3>
+                            <div class="status-box status-transition" id="scheduler-status">Awaiting data...</div>
+                            <p class="action-text status-transition" id="scheduler-action">Loading actions...</p>
+                            <p>Active Servers: <strong id="active-servers" style="color: var(--accent-red);"
+                                    data-val="0">0</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Model Selection -->
+                    <div class="card info-card fade-up" style="animation-delay: 0.7s;">
+                        <div class="card-header">
+                            <h2>Energy-Efficient Model Selection</h2>
+                            <span class="badge purple breathing-badge">AI Driver</span>
+                        </div>
+                        <div class="model-details status-transition">
+                            <div class="model-icon node-pulse">🧠</div>
+                            <div>
+                                <h3 id="selected-model">Loading Model...</h3>
+                                <p class="reason" id="model-reason">Analyzing load...</p>
+                            </div>
+                        </div>
+                        <div class="energy-saved status-transition">
+                            <span>Energy Savings:</span> <strong id="energy-saved">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREDICTIONS VIEW -->
+            <div id="view-predictions" class="view-section">
+                <div class="dashboard-grid">
+                    <div class="card chart-container large fade-up" style="grid-column: span 4; animation-delay: 0.1s;">
+                        <div class="card-header">
+                            <h2>Machine Learning Workload Forecast</h2>
+                            <span class="badge breathing-badge">Linear Auto-Regression</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="predictionChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Additional prediction info -->
+                    <div class="card info-card fade-up" style="grid-column: span 2; animation-delay: 0.2s;">
+                        <h2>Model Accuracy Metrics</h2>
+                        <ul class="feature-list">
+                            <li><strong>Algorithm:</strong> Scikit-Learn Linear Regression</li>
+                            <li><strong>Horizon:</strong> <span style="color: var(--accent-red);">+1 Time Step</span>
+                            </li>
+                            <li><strong>Training Window:</strong> Rolling 100 Ticks</li>
+                            <li><strong>Noise Filtering:</strong> Enabled</li>
+                        </ul>
+                    </div>
+                    <div class="card info-card fade-up" style="grid-column: span 2; animation-delay: 0.3s;">
+                        <h2>Demand Forensics</h2>
+                        <p class="subtext">By anticipating spikes, the system spins up node clusters proactively rather
+                            than reactively, saving 15-20% latency overhead.</p>
+                        <div class="energy-saved status-transition" style="margin-top: 15px;">
+                            <span>Projected Max Demand:</span> <strong id="proj-max-demand" data-val="0">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCHEDULER VIEW -->
+            <div id="view-scheduler" class="view-section">
+                <div class="dashboard-grid">
+                    <div class="card info-card fade-up"
+                        style="grid-column: span 4; display: flex; flex-direction: row; gap: 2rem; align-items: center; justify-content: space-around; animation-delay: 0.1s;">
+                        <div style="text-align: center;">
+                            <h2 style="font-size: 4rem; color: var(--accent-red); margin-bottom: 0; text-shadow: 0 0 20px var(--accent-red-glow);"
+                                id="sched-active" data-val="0">0</h2>
+                            <p style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
+                                Active Rack Nodes</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <h2 style="font-size: 4rem; color: var(--accent-orange); margin-bottom: 0; text-shadow: 0 0 20px var(--accent-orange-glow);"
+                                id="sched-standby" data-val="0">0</h2>
+                            <p style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
+                                Standby / Deep Sleep</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <h2
+                                style="font-size: 4rem; color: var(--text-primary); margin-bottom: 0; text-shadow: 0 0 20px rgba(255,255,255,0.3);">
+                                100%</h2>
+                            <p style="color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
+                                Health Status</p>
+                        </div>
+                    </div>
+                    <div class="card fade-up" style="grid-column: span 4; animation-delay: 0.3s;">
+                        <div class="card-header">
+                            <h2>Real-Time Node Resource Topology</h2>
+                        </div>
+                        <div class="node-grid" id="node-grid">
+                            <!-- Nodes will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODELS VIEW -->
+            <div id="view-models" class="view-section">
+                <div class="dashboard-grid">
+                    <div class="card fade-up"
+                        style="grid-column: span 2; animation-delay: 0.1s; position: relative; overflow: hidden;">
+                        <div class="card-header">
+                            <h2>Current Neural Topology</h2>
+                        </div>
+                        <div class="model-big-icon floating-icon"
+                            style="font-size: 6rem; text-align: center; color: var(--accent-red); margin: 3rem 0; text-shadow: 0 0 30px var(--accent-red-glow);">
+                            🧠</div>
+                        <h2 class="status-transition"
+                            style="text-align: center; color: var(--text-primary); font-size: 2.2rem; text-shadow: 0 0 10px rgba(255,255,255,0.2);"
+                            id="models-selected">ResNet-50</h2>
+                        <p class="status-transition"
+                            style="text-align: center; color: var(--text-secondary); margin-top: 1rem; font-size: 1.1rem;"
+                            id="models-reason">Optimal baseline established.</p>
+                        <div class="radar-scan"></div>
+                    </div>
+                    <div class="card fade-up" style="grid-column: span 2; animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <h2>Model Zoo Registry</h2>
+                        </div>
+                        <div class="zoo-list">
+                            <div class="zoo-item status-transition" id="zoo-resnet">
+                                <h4>ResNet-50</h4>
+                                <span>Max Accuracy / High Energy</span>
+                            </div>
+                            <div class="zoo-item status-transition" id="zoo-efficientnet">
+                                <h4>EfficientNet-B0</h4>
+                                <span>Balanced Performance</span>
+                            </div>
+                            <div class="zoo-item status-transition" id="zoo-mobilenet">
+                                <h4>MobileNetV3 (Pruned)</h4>
+                                <span>Edge-Optimized / Ultra-Low Energy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXTREME ANALYTICS VIEW -->
+            <div id="view-analytics" class="view-section">
+                <div class="dashboard-grid">
+                    <div class="card fade-up"
+                        style="grid-column: span 4; text-align: center; padding: 4rem; animation-delay: 0.1s;">
+                        <h2 class="glow-pulse"
+                            style="color: var(--accent-red); font-size: 2.5rem; margin-bottom: 1rem;">🔥 Thermal Core
+                            Analysis</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 3rem; font-size: 1.2rem;">Real-time node
+                            temperature distribution across the cluster.</p>
+                        <div class="thermal-map">
+                            <div class="heat-zone breathing-zone" id="heat1">
+                                <span class="zone-label">CORE 1</span>
+                            </div>
+                            <div class="heat-zone breathing-zone" id="heat2">
+                                <span class="zone-label">CORE 2</span>
+                            </div>
+                            <div class="heat-zone breathing-zone" id="heat3">
+                                <span class="zone-label">CORE 3</span>
+                            </div>
+                            <div class="heat-zone breathing-zone" id="heat4">
+                                <span class="zone-label">CORE 4</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div
+                            style="margin-top: 3rem; background: rgba(0,0,0,0.5); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); display: inline-block;">
+                            <p
+                                style="font-size: 1.2rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
+                                Avg Cluster Exhaust Temp</p>
+                            <h1 id="core-temp"
+                                style="color: var(--accent-orange); font-size: 4rem; text-shadow: 0 0 20px var(--accent-orange-glow); margin: 0;"
+                                data-val="0">0°C</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
